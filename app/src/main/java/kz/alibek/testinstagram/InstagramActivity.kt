@@ -3,39 +3,33 @@ package kz.alibek.testinstagram
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kz.alibek.testinstagram.core.ui.TabManager
 
-class InstagramActivity : AppCompatActivity() {
+class InstagramActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
 
     companion object {
         fun newIntent(context: Context) = Intent(context, InstagramActivity::class.java)
     }
 
-    private val recyclerView: RecyclerView by lazy { findViewById(R.id.recyclerView) }
-
-    private val recyclerViewData = listOf(
-        InstaData(
-            title = "Arsenal FC",
-            R.drawable.ic_arsenal,
-        ),
-        InstaData(
-            title = "Arsenal FC home kit",
-            R.drawable.ic_arsenal_kit,
-        ),
-        InstaData(
-            title = "Bukayo Saka",
-            R.drawable.ic_saka,
-        ),
-        InstaData(
-            title = "Gabriel Jesus",
-            R.drawable.ic_gaby_jesus,
-        ),
-    )
+    private val tabManager: TabManager by lazy { TabManager(this) }
+    private val bottomNavigationView: BottomNavigationView by lazy {
+        findViewById(R.id.bottomNavigationView)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +40,28 @@ class InstagramActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = InstaRecyclerAdapter(recyclerViewData)
+
+        if (savedInstanceState == null) {
+            tabManager.setInitialNavController()
+        }
+        setupBottomView()
+        handleBottomTabVisibility()
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        tabManager.switchTab(item.itemId)
+        return true
+    }
+
+    private fun setupBottomView() {
+        bottomNavigationView.setOnItemSelectedListener(this)
+    }
+
+    private fun handleBottomTabVisibility() {
+        tabManager.isBottomTabVisible
+            .onEach { isVisible ->
+                bottomNavigationView.isVisible = isVisible
+            }
+            .launchIn(lifecycleScope)
     }
 }

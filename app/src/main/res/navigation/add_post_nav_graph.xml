@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/add_post_nav_graph"
+    app:startDestination="@id/addPostFragment">
+
+    <fragment
+        android:id="@+id/addPostFragment"
+        android:name="kz.alibek.testinstagram.addpost.AddPostFragment"
+        android:label="AddPostFragment"/>
+
+</navigation>

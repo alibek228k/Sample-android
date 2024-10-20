@@ -5,5 +5,22 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.TestInstagram" parent="Base.Theme.TestInstagram" />
+    <style name="Theme.TestInstagram" parent="Base.Theme.TestInstagram" >
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:navigationBarColor">@color/white</item>
+    </style>
+
+    <style name="Theme.Qpia.BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
+
+        <item name="itemIconTint">@color/bottom_menu_colors</item>
+        <item name="itemTextAppearanceActive">@style/BottomNavigationTextStyle</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavigationTextStyle</item>
+        <item name="itemTextColor">@color/bottom_menu_colors</item>
+        <item name="labelVisibilityMode">labeled</item>
+
+    </style>
+
+    <style name="BottomNavigationTextStyle">
+        <item name="android:textSize">11sp</item>
+    </style>
 </resources>
